@@ -31,17 +31,82 @@ public class Parser {
     
     
     private float expr(){  //Expr ->...  Símbolo inicial. Devuelve el resultado de la expresion.
+        float a = termino();
+        float b = p2();
+        return a + b;
+    }
+    private float p2(){
+        String lxm  = analex.Preanalisis().getLexem();
+        String[] conj = {"+","-"};
+        if (existIn(lxm,conj)){
+            float a = p1();
+            float b = p2();
+            return a + b;
+        }
         return 0;
     }
-    
+    private float p1(){
+        String lxm  = analex.Preanalisis().getLexem();
+        if(lxm == "+"){
+            match(analex.Preanalisis().getNom());
+            return termino();
+        }else{
+            match(analex.Preanalisis().getNom());
+            return -termino();
+        }
+    }
     private float termino(){    //Termino ->
-        return 0;
+        float a = factor();
+        float b = p4();
+        return a * b;
     }
-    
-    private float factor(){     //Factor ->
+    private float p4(){
+        String lxm  = analex.Preanalisis().getLexem();
+        String[] conj = {"*","/"};
+        if(existIn(lxm, conj)){
+            float a = p3();
+            float b = p4();
+            return a * b;
+        }
         return 1;
     }
-       
+    private float p3(){
+        String lxm  = analex.Preanalisis().getLexem();
+        if(lxm == "*"){
+            match(analex.Preanalisis().getNom());
+            return factor();
+        }else{
+            if(lxm == "/"){
+                match(analex.Preanalisis().getNom());
+                return 1/factor();
+            }
+        }
+        return 0;
+    }
+    private float factor(){     //Factor ->
+        int nom  = analex.Preanalisis().getNom();
+        if(nom == 9){// num
+            float a = analex.Preanalisis().getAtr();
+            match(analex.Preanalisis().getNom());
+            return a;
+        }else{
+            if(nom == 5){// menos
+                match(analex.Preanalisis().getNom());
+                return -factor();
+            }else{
+                if(nom == 4){//mas
+                    match(analex.Preanalisis().getNom());
+                    return factor();
+                }else{// PA = (
+                    match(analex.Preanalisis().getNom());
+                    float b = expr();
+                    match(analex.Preanalisis().getNom());
+                    return b;
+                }
+            }
+        }
+    }
+    
     private void match(int nomToken){       
         match(nomToken, "Error de Sintaxis");
     }
@@ -57,7 +122,13 @@ public class Parser {
     private void setError(String msj){
         error.setError(msj, analex.getPosLexema(), analex.lexema());
     }
-    
+    //funcion para buscar en un conjunto
+    private boolean existIn(String a, String[] b){
+        for (int i = 0; i < b.length; i++) {
+            if(a == b[i]) return true;
+        }
+        return false;
+    }
     
 //----------------- Para resaltar el Error en el Form --------------------------    
       public void comunicarError(){

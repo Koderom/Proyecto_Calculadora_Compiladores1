@@ -22,7 +22,8 @@ public class Main {
         
        Parser parser = new Parser();
        
-       float r = parser.evaluar("25 * sin(23.6+e)- logB(10, sen(pi)) ");
+       //float r = parser.evaluar("25 * sin(23.6+e)- logB(10, sen(pi)) ");
+       float r = parser.evaluar("8*0+1");
        
         if (parser.hayError())
            System.out.println(parser.getErrorMsj());
