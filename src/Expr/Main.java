@@ -1,5 +1,7 @@
 package Expr;
 
+import FrontEnd.Form;
+
 public class Main {
     private static void pruebaAnalex(){
         String ProgFuente = "99 3. .25 32.78 , ( ) + - * / pi e sen cos sqrt logb";
@@ -20,16 +22,17 @@ public class Main {
     public static void main(String[] args) { 
        //pruebaAnalex();
         
-       Parser parser = new Parser();
+       //Parser parser = new Parser();
        
        //float r = parser.evaluar("25 * sin(23.6+e)- logB(10, sen(pi)) ");
-       float r = parser.evaluar("8*0+1");
+       //float r = parser.evaluar("(5+15)/(10-6)");
        
-        if (parser.hayError())
-           System.out.println(parser.getErrorMsj());
-        else
-           System.out.println("El valor de la expresión es " + r);
- 
+        //if (parser.hayError())
+        //   System.out.println(parser.getErrorMsj());
+        //else
+        //   System.out.println("El valor de la expresión es " + r);
+        Form f = new Form();
+        f.setVisible (true);
     }
     
 }
